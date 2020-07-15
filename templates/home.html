@@ -55,6 +55,27 @@
             {{ form.application }}
             <input type="submit">
         </form>
+        <script>
+            let topic_select = document.getElementById('topic');
+            let app_select = document.getElementById('application');
+
+            topic_select.onchange = function() {
+                topic = topic_select.value;
+
+                fetch('/use_cases/' + topic).then(function(response) {
+                    response.json.then(function(data) {
+                        let optionHTML = '';
+
+                        for(let application of data.applications) {
+                            optionHTML += '<option>' + application['name'] + '</option>';
+                        }
+
+                        app_select.innerHTML = optionHTML;
+                    });
+                });
+            }
+        </script>
+
 
 
         <!--<form method="POST" action="/use_cases" style="text-align: center;">
@@ -83,15 +104,10 @@
         {% for topic in topics %}
                 <button onclick="send()">{{topic.name}}</button>
                 <br>
-            {% endfor %}-->
+            {% endfor %}
         
         <script>
             
-            function send() {
-                let topic = document.getElementById("topics");
-                
-                return topic.value;
-            }
 
             /*function printBtn() { //goal: create a vertical line of buttons
                 //Array for topic nodes
@@ -105,7 +121,7 @@
                 }
             }
             window.onload = printBtn();*/
-        </script>
+        </script>-->
         
 
     </body>

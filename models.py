@@ -1,5 +1,6 @@
 from py2neo import Graph, Node, Relationship
 from neo4j import GraphDatabase, SessionConfig
+
 import csv
 
 
@@ -9,15 +10,12 @@ def db():
         csv_reader = csv.DictReader(csv_file) # add , delimiter=',' to specify delimiter
 
         # next(csv_reader)  # skips over both header rows 
-        graph = Graph("bolt://neo4j:ubdprototype@localhost:7687")
+        graph = Graph("bolt://neo4j:prototype@localhost:11002")
         graph.delete_all()
         
         for line in csv_reader:
             
-            #if not graph.exists(Node("Topic", name=line['topic'])):
-            topic = Node("Topic", name=line['topic']) # merge later on
-            #if not graph.exists(Node("Application", name=line['name'], website=line['website'],
-            #   publication=line['publication'])):
+            topic = Node("Topic", name=line['topic']) 
             application = Node("Application", name=line['name'], website=line['website'],
                 publication=line['publication'])
             
@@ -27,14 +25,12 @@ def db():
             graph.merge(dataset, "Dataset", "identifier")
 
 
-            graph.create(Relationship(application, "relates to", topic))
-            graph.create(Relationship(application, "uses", dataset, conf_level=line['conf-level']))
+            graph.create(Relationship(application, "RELATES_TO", topic))
+            graph.create(Relationship(application, "USES", dataset, conf_level=line['conf-level']))
             
             
 
     return graph
-
-
 
 
 
