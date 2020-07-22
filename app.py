@@ -42,20 +42,20 @@ def home():
 def use_cases(topic):
     
     apps = get_apps(topic)
-    applications = [app[0] for app in apps]
+    applications = [app for app in apps]
     
     #return jsonify({'applications' : applications})
-    return render_template('use_cases.html', topic=topic, apps=apps)
+    return render_template('use_cases.html', topic=topic, applications=applications)
      
 
-@app.route('/data/<application>')
-def data(application):
+@app.route('/data/<topic>/<application>')
+def data(topic, application):
     
     data = get_datasets(application)
     datasets = [d[0] for d in data]
 
-    return jsonify({'datasets' : datasets})
-
+    #return jsonify({'datasets' : datasets})
+    return render_template('data.html', topic=topic, application=application, datasets=datasets)
 
 
 if __name__ == '__main__':
@@ -69,7 +69,7 @@ def get_apps(topic):
     query = '''
         match p=(t:Topic)-[r:`relates to`]-(a:Application) 
         WHERE t.name = $topic
-        RETURN a.name
+        RETURN a.name, a.website, a.publication
         '''
     
     return graph.run(query, topic=topic)

@@ -15,28 +15,23 @@
             margin-right: auto;
         }
     </style>
-    <p>Topic: {{topic}}</p>
+    <h3>Topic: {{topic}}</h3>
 </head>
 
 <body>
     <ul>
-        {% for app in apps %}
+        {% for app in applications %}
 
         <li>
-
-            <a href="/data/{{app.name}}">
-                <input type="button" value="{{app.name}}" class="center">
+     
+            <a href="/data/{{topic}}/{{app[0]}}">
+                <button><strong>{{app[0]}}</strong><br><br>
+                    <strong>Website:</strong> {{app[1]}}<br>
+                    <strong>Publication:</strong> {{app[2]}}</button>
             </a>
+       
+        </li><br>
         
-        <!--
-            <a href="/data/{{app.name}}">
-                <button class="center">{{app.name}}<br><br>
-                    Website: {{app.website}}<br>
-                    Publication: {{app.publication}}</button>
-            </a>
-        -->
-            <br>
-        </li>
         {% endfor %}
 
     </ul>
