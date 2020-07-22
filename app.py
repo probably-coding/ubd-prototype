@@ -5,53 +5,51 @@ from models import db
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret'
+app.secret_key = 'secret_key'
 graph = db()
+
 
 class Form(FlaskForm):
     topic = SelectField('topic', choices=[])
-    application = SelectField('application', choices=[])
+    application = SelectField('application', choices=[("", "---")])
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    # topics = graph.nodes.match("Topic")
     form = Form()
-    form.topic.choices = [(topic['name']) for topic in graph.nodes.match("Topic")]
-    form.application.choices = [(app['name']) for app in graph.nodes.match("Application")]
+    form.topic.choices = [topic['name'] for topic in graph.nodes.match("Topic")]
+    # form.application.choices = [(app['name']) for app in graph.nodes.match("Application")]
     
-    #if request.method == 'POST':
-        
+    if request.method == 'POST':
+        topic = request.form['topic']
+        app = request.form['application']
+
+        # get datasets used by app
+        data = get_datasets(app)
+        datasets = [d[0] for d in data]
+            
+        #return jsonify({'datasets' : datasets})
+        return render_template('data.html', topic=topic, app=app, datasets=datasets)
 
     return render_template('home.html', form=form) # topics=topics 
+
 
 @app.route('/use_cases/<topic>')
 def use_cases(topic):
     
     apps = get_apps(topic)
+    applications = [app[0] for app in apps]
     
-    applications = []
-    for app in apps:
-        print(app)
-        appObj = {}
-        appObj['name'] = app['name']
-        applications.append(appObj)
-
     return jsonify({'applications' : applications})
-    
+     
 
 @app.route('/data/<application>')
 def data(application):
     
-    datasets = graph.match(application, r_type="uses", limit=None)
+    data = get_datasets(application)
+    datasets = [d[0] for d in data]
 
-    dataArray = []
-
-    for data in datasets:
-        dataObj = {}
-        dataObj['identifier'] = data.end_node.identifier
-        dataArray.append(dataObj)
-
-    return jsonify({'datasets' : dataArray})
+    return jsonify({'datasets' : datasets})
 
 
 
@@ -61,53 +59,27 @@ if __name__ == '__main__':
 
 
 
+
 def get_apps(topic):
     query = '''
-        MATCH (topic:Topic)-[:RELATES_TO]->(app:Application)
-        WHERE topic = $topic
-        RETURN app AS apps
+        match p=(t:Topic)-[r:`relates to`]-(a:Application) 
+        WHERE t.name = $topic
+        RETURN a.name
         '''
     
     return graph.run(query, topic=topic)
 
 
+def get_datasets(app):
+    query = '''
+        match p=(a:Application)-[r:`uses`]-(d:Dataset) 
+        WHERE a.name = $app
+        RETURN d
+        '''
+
+    return graph.run(query, app=app)
 
 
 
-'''
-@app.route('/api')
-def session_api():
-    return jsonify(list()) #list of relevant dataset nodes
-'''
 
-'''
-@api.route('/api')
-class Get(Resource):
-
-    def get(self):
-        return jsonify(objects)
-
-'''
-
-
-'''
-# Save results for specified topic to a JSON file
-
-# Usage cases dictionary
-usages = {} 
-
-# Iterates through returned applications
-for(a in applications):
-    usages[a] = {'name': application.name, 
-    'website': application.website, 'year_published' = application.year}
-
-# Iterates through returned papers
-for(p in papers):
-    usages[p] = {'title': paper.title, 'doi': paper.doi, 'year': paper.year}
-
-with open('usages.json', 'w') as usage_file:
-    json.dump(usages, usage_file)
-
-
-'''
 

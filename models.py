@@ -1,6 +1,4 @@
 from py2neo import Graph, Node, Relationship
-from neo4j import GraphDatabase, SessionConfig
-
 import csv
 
 
@@ -10,43 +8,37 @@ def db():
         csv_reader = csv.DictReader(csv_file) # add , delimiter=',' to specify delimiter
 
         # next(csv_reader)  # skips over both header rows 
-        graph = Graph("bolt://neo4j:prototype@localhost:11002")
+        graph = Graph("bolt://localhost:7687", auth=("neo4j", "ubdprototype"))
+
+        try:
+            graph.run("Match () Return 1 Limit 1")
+        except Exception:
+            print('Invalid connection. Is Neo4j running? Check username and password.')
+            raise Exception
+
         graph.delete_all()
         
         for line in csv_reader:
             
-            topic = Node("Topic", name=line['topic']) 
+            topic = Node("Topic", name=line['topic'])
             application = Node("Application", name=line['name'], website=line['website'],
                 publication=line['publication'])
             
             dataset = Node("Dataset", identifier=line['identifier']) # may include a identifier TYPE property
 
             graph.merge(topic, "Topic", "name")
+            graph.merge(application, "Application", "name")
             graph.merge(dataset, "Dataset", "identifier")
 
 
-            graph.create(Relationship(application, "RELATES_TO", topic))
-            graph.create(Relationship(application, "USES", dataset, conf_level=line['conf-level']))
+            graph.create(Relationship(application, "relates to", topic))
+            graph.create(Relationship(application, "uses", dataset, conf_level=line['conf-level']))
             
             
 
     return graph
 
 
-
-
-
-
-# uri = "neo4j://localhost:7687"
-# driver = GraphDatabase.driver(uri, auth=("neo4j", "password"))
-
-# session = driver.session(SessionConfig.forDatabase( "Applications" ))
-
-# Using official Neo4j Python Driver
-            # session.write_transaction(assign_topic, line['name'], line['topic'])
-
-def assign_topic(tx, application, topic):
-    tx.run("CREATE (a:Application {name: $application})-[:RELATES_TO]->(t:Topic {name: $topic})", application=application, topic=topic)
 
 
 

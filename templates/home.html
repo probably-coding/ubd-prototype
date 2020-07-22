@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Home{% endblock %}
@@ -7,78 +6,59 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        
-        <p style="text-align: center;">Choose a topic:</p>
-        <style>
 
-            .dropbtn {
-                background-color: black;
-                color: white;
-                padding: 18px;
-                font-size: 14px;
-                border: none;
-            }
-            
-            .dropdown {
-                position: relative;
-                display: inline-block;
-            }
-            
-            .dropdown-content {
-                display: none;
-                position: absolute;
-                background-color: lightgrey;
-                min-width: 150px;
-                z-index: 1;
-            }
-            
-            .dropdown-content a {
-                color: black;
-                padding: 12px 14px;
-                text-decoration: none;
-                display: block;
-            }
-            
-            .dropdown-content a:hover {background-color: white;}
-            .dropdown:hover .dropdown-content {display: block;}
-            .dropdown:hover .dropbtn {background-color: grey;}
-            
-        </style>
-    </head>
+<head>
+    <style>
+        .center {
+            /* display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%; */
+            vertical-align: middle;
+        }
+    </style>
+    
+    <br><br><br>
+    <p style="text-align: center;">Choose a topic and application:</p>
+    <!--Any extra style choices can be added below-->
 
-    <body>
-        
-        <form method='POST'>
-            {{ form.crsf_token }}
-            {{ form.topic }}
-            {{ form.application }}
-            <input type="submit">
-        </form>
-        <script>
-            let topic_select = document.getElementById('topic');
-            let app_select = document.getElementById('application');
+</head>
 
-            topic_select.onchange = function() {
-                topic = topic_select.value;
+<body>
+    <br>
+    <form method='POST' style="text-align: center;">
+        {{ form.crsf_token }}
+        {{ form.topic }}
+        {{ form.application }}
+        <input type="submit">
+    <a href="/">
+    <input type="button" value="Clear">
+    </a>
+    </form>
+    
+    
+    <script>
+        let topic_select = document.getElementById('topic');
+        let app_select = document.getElementById('application');
 
-                fetch('/use_cases/' + topic).then(function(response) {
-                    response.json.then(function(data) {
-                        let optionHTML = '';
+        topic_select.onchange = function () {
+            topic = topic_select.value;
 
-                        for(let application of data.applications) {
-                            optionHTML += '<option>' + application['name'] + '</option>';
-                        }
+            fetch('/use_cases/' + topic).then(function (response) {
+                response.json().then(function (data) {
+                    let optionHTML = '';
 
-                        app_select.innerHTML = optionHTML;
-                    });
+                    for (application of data.applications) {
+                        optionHTML += '<option>' + application + '</option>';
+                    }
+
+                    app_select.innerHTML = optionHTML;
                 });
-            }
-        </script>
+            });
+        }
+    </script>
 
-
-
-        <!--<form method="POST" action="/use_cases" style="text-align: center;">
+    <!--<form method="POST" action="/use_cases" style="text-align: center;">
             <select id="topics">
                 {% for topic in topics %}
                 <option value="topic">{{topic.name}}</option>
@@ -104,28 +84,13 @@
         {% for topic in topics %}
                 <button onclick="send()">{{topic.name}}</button>
                 <br>
-            {% endfor %}
-        
-        <script>
-            
+            {% endfor %}-->
 
-            /*function printBtn() { //goal: create a vertical line of buttons
-                //Array for topic nodes
-                //var topics = {topics};
-                for(var i = 0; i<topics.length; i++) {
-                    var btn = document.createElement("button");
-                    var t = document.createTextNode(topics[i]['name']); //prints out the topic names
-                    btn.appendChild(t);
-                    document.body.appendChild(btn);
-                    document.write("<br>");
-                }
-            }
-            window.onload = printBtn();*/
-        </script>-->
-        
 
-    </body>
-    
+
+
+</body>
+
 
 
 
