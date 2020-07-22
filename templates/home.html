@@ -8,28 +8,36 @@
 <html>
 
 <head>
+    <!--Any extra style choices can be added below-->
     <style>
         .center {
-            /* display: block;
+            display: block;
             margin-left: auto;
             margin-right: auto;
-            width: 50%; */
-            vertical-align: middle;
         }
+
     </style>
-    
+
     <br><br><br>
-    <p style="text-align: center;">Choose a topic and application:</p>
-    <!--Any extra style choices can be added below-->
+    <p style="text-align: center;">Choose a topic:</p>
+
 
 </head>
 
 <body>
     <br>
+
+    {% for topic in topics %}
+
+    <a href="/use_cases/{{topic.name}}">
+        <input type="button" value="{{topic.name}}" class="center">
+    </a>
+    <br>
+    {% endfor %}
+
+    <!--
     <form method='POST' style="text-align: center;">
-        {{ form.crsf_token }}
-        {{ form.topic }}
-        {{ form.application }}
+        
         <input type="submit">
     <a href="/">
     <input type="button" value="Clear">
@@ -45,7 +53,7 @@
             topic = topic_select.value;
 
             fetch('/use_cases/' + topic).then(function (response) {
-                response.json().then(function (data) {
+                response.json().then(function(data) {
                     let optionHTML = '';
 
                     for (application of data.applications) {
@@ -58,7 +66,12 @@
         }
     </script>
 
-    <!--<form method="POST" action="/use_cases" style="text-align: center;">
+
+
+
+
+
+    <form method="POST" action="/use_cases" style="text-align: center;">
             <select id="topics">
                 {% for topic in topics %}
                 <option value="topic">{{topic.name}}</option>

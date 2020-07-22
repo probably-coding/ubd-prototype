@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Usage Cases{% endblock %}
@@ -7,33 +6,45 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <p>Topic: {{topic}}</p>
-    </head>
 
-    <body>
-        <form method="POST" style="text-align: center;">
-            <select id="topics">
-                {% for app in applications %}
-                <option value="topic">{{app.name}}</option>
-                
-                {% endfor %}
+<head>
+    <style>
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    <p>Topic: {{topic}}</p>
+</head>
 
-            </select>
-            <input type="button" value="Submit" onclick="send()">
-        </form> 
+<body>
+    <ul>
+        {% for app in apps %}
 
+        <li>
 
-    </body>
+            <a href="/data/{{app.name}}">
+                <input type="button" value="{{app.name}}" class="center">
+            </a>
+        
+        <!--
+            <a href="/data/{{app.name}}">
+                <button class="center">{{app.name}}<br><br>
+                    Website: {{app.website}}<br>
+                    Publication: {{app.publication}}</button>
+            </a>
+        -->
+            <br>
+        </li>
+        {% endfor %}
+
+    </ul>
+
+</body>
 
 
 </html>
-
-
-
-
-
-
 
 
 

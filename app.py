@@ -14,8 +14,9 @@ class Form(FlaskForm):
     application = SelectField('application', choices=[("", "---")])
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/') #, methods=['GET', 'POST'])
 def home():
+    '''
     form = Form()
     form.topic.choices = [topic['name'] for topic in graph.nodes.match("Topic")]
     # form.application.choices = [(app['name']) for app in graph.nodes.match("Application")]
@@ -30,8 +31,11 @@ def home():
             
         #return jsonify({'datasets' : datasets})
         return render_template('data.html', topic=topic, app=app, datasets=datasets)
+    '''
 
-    return render_template('home.html', form=form) # topics=topics 
+    topics = graph.nodes.match("Topic")
+    return render_template('home.html', topics=topics)
+    #return render_template('home.html', form=form) # topics=topics 
 
 
 @app.route('/use_cases/<topic>')
@@ -40,7 +44,8 @@ def use_cases(topic):
     apps = get_apps(topic)
     applications = [app[0] for app in apps]
     
-    return jsonify({'applications' : applications})
+    #return jsonify({'applications' : applications})
+    return render_template('use_cases.html', topic=topic, apps=apps)
      
 
 @app.route('/data/<application>')
