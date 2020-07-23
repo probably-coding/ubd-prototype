@@ -9,10 +9,8 @@
 <html>
 
 <head>
-    <br><br><br>
-    <h3>Topic: {{topic}}</h3>
-    <h3>Application: {{application}}</h3><br>
-
+    <br>
+    <p><a href="/">Topics</a> / <a href="/use_cases/{{topic}}">{{topic}}</a> / {{application}}</p><br>
 </head>
 
 <body>
@@ -21,12 +19,23 @@
     <p>Relevant Datasets:</p>
     <ul>
         {% for data in datasets %}
-        <li><a href={{data.identifier}} target="_blank">{{data.identifier}}</a></li>
-
+        <li>
+            <a href={{data[0]}} target="_blank">
+                <button>
+                    <strong>{{data[0]}}</strong><br><br>
+                    Confidence Level: {{data[1]}}
+                </button>
+            </a>
+        </li>
+        <br>
         {% endfor %}
 
     </ul>
-    
+
+    <a href="/data/jsonify/{{topic}}/{{application}}">
+        <input type="button" value="JSON DOI">
+    </a>
+
 </body>
 
 
