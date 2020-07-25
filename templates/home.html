@@ -10,6 +10,9 @@
 <head>
     <!--Any extra style choices can be added below-->
     <style>
+
+        
+
         .center {
             display: block;
             margin-left: auto;
@@ -50,12 +53,12 @@
     </style>
 
     <br><br><br>
-    <p style="text-align: center;">CHOOSE A TOPIC:</p>
+    <p style="text-align: center; color: whitesmoke">CHOOSE A TOPIC:</p>
 
 
 </head>
 
-<body>
+<body class="buttonFont">
     <br>
     <div class="menu-container">
         <div class="button-container">
@@ -63,7 +66,7 @@
             {% for topic in topics %}
 
             <a href="/use_cases/{{topic.name}}">
-                <button><strong>{{topic.name}}</strong><br></button>
+                <button class="buttonFont"><strong>{{topic.name}}</strong><br></button>
             </a>
 
             {% endfor %}

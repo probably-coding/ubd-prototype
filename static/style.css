@@ -1,11 +1,12 @@
 .myFontClass{
     font-family: 'SpaceMeatballRegular';
     font-weight: normal;
-    font-style: normal; 
+    font-style: normal;
+    color: white;
 }
 
 .buttonFont {
     font-family: 'Helvetica';
-    
+    font-weight: normal;
+    font-style: normal;
 }
-

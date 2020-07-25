@@ -2,26 +2,37 @@
     <title>
         {% block title %}{% endblock %}
     </title>
-    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/space-meatball" type="text/css"/>
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/space-meatball" type="text/css" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="shortcut icon" type = "image/png" href="../../static/nasalogo.png">
-    
+    <link rel="shortcut icon" type="image/png" href="../../static/nasalogo.png">
+
     <style>
+        
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            background-image: url('../../static/earth-background.png');
+            min-height: 100%;
+
+        }
+
         img {
             display: block;
             margin-left: auto;
             margin-right: auto;
         }
-
     </style>
 
-
 </head>
-<h1 style="text-align: center;">EOSDIS Data Usage Search</h1>
+<br>
+<h1 style="text-align: center; color: whitesmoke">EOSDIS Data Usage Search</h1>
 
 <br>
-<img src="../../static/nasalogo.png" alt="nasa" width="150" height="130"/>
-    
+<a href="https://search.earthdata.nasa.gov/search">
+    <img src="../../static/nasalogo.png" alt="nasa" width="150" height="130" />
+</a>
 
 {% block main %}
 {% endblock %}
