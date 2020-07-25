@@ -2,10 +2,11 @@
     <title>
         {% block title %}{% endblock %}
     </title>
-    
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/space-meatball" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <link rel="shortcut icon" type = "image/png" href="../../static/nasalogo.png">
     
-        <style>
+    <style>
         img {
             display: block;
             margin-left: auto;
