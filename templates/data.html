@@ -9,32 +9,65 @@
 <html class="myFontClass">
 
 <head>
+
+    <style>
+        p {
+            color: whitesmoke;
+            text-align: center;
+        }
+
+        button {
+            width: 35%;
+            height: 25%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 25px;
+            font-family: 'Helvetica';
+
+        }
+
+        input {
+            width: 7%;
+            height: 7%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 15px;
+            font-family: 'SpaceMeatballRegular';
+            font-size: 10px;
+
+        }
+    </style>
+
     <br>
-    <p style="color: whitesmoke"><a href="/">Topics</a> / <a href="/use_cases/{{topic}}">{{topic}}</a> / {{application}}</p><br>
+    <p><a href="/">Topics</a> / <a href="/use_cases/{{topic}}">{{topic}}</a> / {{application}}</p>
+    <br><br>
 </head>
 
 <body>
 
     <!--List dataset information here-->
-    <p style="color: whitesmoke">Relevant Datasets:</p>
-    <ul>
-        {% for data in datasets %}
-        <li>
-            <a href={{data[0]}} target="_blank">
-                <button>
-                    <strong>{{data[0]}}</strong><br><br>
-                    Confidence Level: {{data[1]}}
-                </button>
-            </a>
-        </li>
-        <br>
-        {% endfor %}
+    <p>Relevant Datasets:</p>
 
-    </ul>
+    {% for data in datasets %}
 
-    <a href="/data/jsonify/{{topic}}/{{application}}">
-        <input type="button" value="JSON DOI">
-    </a>
+    
+        <button onclick="window.open('{{data[0]}}','_blank')">
+            <h2><strong>{{data[0]}}</strong></h2>
+            
+            (Confidence Level: {{data[1]}})
+        </button>
+    
+
+    <br><br>
+    {% endfor %}
+
+
+
+    
+        <input type="button" value="JSON DOI" onclick="window.open('/data/jsonify/{{topic}}/{{application}}','_blank')">
+    
 
 </body>
 

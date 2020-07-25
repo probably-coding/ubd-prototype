@@ -8,31 +8,52 @@
 <html class="myFontClass">
 
 <head>
-    
+
+    <style>
+        p {
+            color: whitesmoke;
+            text-align: center;
+        }
+
+        button {
+            width: 35%;
+            height: 25%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 25px;
+            font-family: 'Helvetica';
+            overflow-y: auto;
+
+        }
+    </style>
+
     <br>
-    <p style="color: whitesmoke"><a href="/">Topics</a> / {{topic}}</p><br>
+    <p><a href="/">Topics</a> / {{topic}}</p><br>
+
+
 </head>
 
 <body>
 
-    <p style="color: whitesmoke">Relevant Applications:</p>
+    <p>Relevant Applications:</p>
 
-    <ul>
-        {% for app in applications %}
 
-        <li>
-     
-            <a href="/data/{{topic}}/{{app[0]}}">
-                <button><strong>{{app[0]}}</strong><br><br>
-                    <strong>Website:</strong> {{app[1]}}<br>
-                    <strong>Publication:</strong> {{app[2]}}</button>
-            </a>
-       
-        </li><br>
-        
-        {% endfor %}
+    {% for app in applications %}
 
-    </ul>
+    <button onclick="window.location.href='/data/{{topic}}/{{app[0]}}';">
+        <h2><strong>{{app[0]}}</strong></h2>
+
+        <strong>Website:</strong> <a href={{app[1]}}>{{app[1]}}</a>
+        <br>
+        <strong>Publication:</strong> <a href={{app[2]}}>{{app[2]}}</a>
+    </button>
+
+    <br>
+
+    {% endfor %}
+
+
 
 </body>
 
