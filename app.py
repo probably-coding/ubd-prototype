@@ -37,6 +37,14 @@ def home():
     return render_template('home.html', topics=topics)
     # return render_template('home.html', form=form) # topics=topics 
 
+def get_apps(topic):
+    query = '''
+        match p=(t:Topic)-[r:`relates to`]-(a:Application) 
+        WHERE t.name = $topic
+        RETURN a.name, a.website, a.publication
+        '''
+    
+    return graph.run(query, topic=topic)
 
 @app.route('/use_cases/<topic>')
 def use_cases(topic):
@@ -46,7 +54,17 @@ def use_cases(topic):
     
     # return jsonify({'applications' : applications})
     return render_template('use_cases.html', topic=topic, applications=applications)
+  
      
+def get_datasets(app):
+    query = '''
+        match p=(a:Application)-[r:`uses`]-(d:Dataset) 
+        WHERE a.name = $app
+        RETURN d.identifier, r.conf_level
+        '''
+
+    return graph.run(query, app=app)
+
 
 @app.route('/data/<topic>/<application>')
 def data(topic, application):
@@ -80,24 +98,7 @@ if __name__ == '__main__':
 
 
 
-def get_apps(topic):
-    query = '''
-        match p=(t:Topic)-[r:`relates to`]-(a:Application) 
-        WHERE t.name = $topic
-        RETURN a.name, a.website, a.publication
-        '''
-    
-    return graph.run(query, topic=topic)
 
-
-def get_datasets(app):
-    query = '''
-        match p=(a:Application)-[r:`uses`]-(d:Dataset) 
-        WHERE a.name = $app
-        RETURN d.identifier, r.conf_level
-        '''
-
-    return graph.run(query, app=app)
 
 
 
