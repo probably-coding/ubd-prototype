@@ -1,5 +1,5 @@
 appdirs==1.4.4
-certifi==2020.6.20
+certifi==2022.12.7
 Click==7.0
 colorama==0.4.3
 distlib==0.3.1
